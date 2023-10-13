@@ -1,0 +1,183 @@
+SQL*Plus: Release 19.0.0.0.0 - Production on Thu Oct 12 22:59:16 2023
+Version 19.3.0.0.0
+
+Copyright (c) 1982, 2019, Oracle.  All rights reserved.
+
+Enter user-name: userdhruv
+Enter password:
+Last Successful login time: Thu Oct 12 2023 22:55:48 +05:30
+
+Connected to:
+Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.3.0.0.0
+
+SQL> create table gym_members(
+  2  id number(10) primary key,
+  3  name varchar2(20) not null,
+  4  age number(3) not null check(age>0),
+  5  joining_date date  not null unique,
+  6  expiration_date date  not null unique,
+  7  cost number(8) not null,
+  8  city varchar2(30)  default 'mumbai' not null,
+  9  height number(3) not null,
+ 10  weight number(3) not null,
+ 11  created_at date default sysdate
+ 12  );
+
+Table created.
+
+SQL> create sequence seq_name
+  2  start with 1
+  3  increment by 1;
+create sequence seq_name
+                *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object
+
+
+SQL> insert into gym_members(id,name,age,joining_date,expiration_date,cost,city,height,weight) values (seq_name.nextval,'Sahil',22,'3-Apr-2023','3-Jun-2023',4000,'pune',165,50);
+
+1 row created.
+
+SQL> insert into gym_members(id,name,age,joining_date,expiration_date,cost,city,height,weight) values (seq_name.nextval,'Hanesh',28,'8-Apr-2023','8-Jul-2023',6000,'pune',160,60);
+
+1 row created.
+
+SQL> insert into gym_members(id,name,age,joining_date,expiration_date,cost,city,height,weight) values (seq_name.nextval,'Vishnu',25,'2-Aug-2023','2-Sep-2023',2000,'mumbai',165,63);
+
+1 row created.
+
+SQL> insert into gym_members(id,name,age,joining_date,expiration_date,cost,city,height,weight) values (seq_name.nextval,'Jayesh',28,'15-Jun-2023','15-Dec-2023',12000,'nagpur',168,53);
+
+1 row created.
+
+SQL> insert into gym_members(id,name,age,joining_date,expiration_date,cost,city,height,weight) values (seq_name.nextval,'Nakul',27,'10-Jan-2023','10-Apr-2023',6000,'kolhapur',170,78);
+
+1 row created.
+
+SQL> insert into gym_members(id,name,age,joining_date,expiration_date,cost,city,height,weight) values (seq_name.nextval,'Ishan',25,'20-Feb-2023','20-Apr-2023',4000,'nashik',175,88);
+
+1 row created.
+SQL> SET LINESIZE 200;
+SQL> select * from gym_members;
+
+        ID NAME                        AGE JOINING_D EXPIRATIO       COST CITY                               HEIGHT
+        WEIGHT CREATED_A
+---------- -------------------- ---------- --------- --------- ---------- ------------------------------ ---------- ---------- ---------
+        21 Sahil                        22 03-APR-23 03-JUN-23       4000 pune                                  165
+            50 12-OCT-23
+        22 Hanesh                       28 08-APR-23 08-JUL-23       6000 pune                                  160
+            60 12-OCT-23
+        23 Vishnu                       25 02-AUG-23 02-SEP-23       2000 mumbai                                165
+            63 12-OCT-23
+        24 Jayesh                       28 15-JUN-23 15-DEC-23      12000 nagpur                                168
+            53 12-OCT-23
+        25 Nakul                        27 10-JAN-23 10-APR-23       6000 kolhapur                              170
+            78 12-OCT-23
+        26 Ishan                        25 20-FEB-23 20-APR-23       4000 nashik                                175
+            88 12-OCT-23
+
+6 rows selected.
+
+SQL> select * from gym_members where cost >4000;
+
+        ID NAME                        AGE JOINING_D EXPIRATIO       COST CITY                               HEIGHT
+        WEIGHT CREATED_A
+---------- -------------------- ---------- --------- --------- ---------- ------------------------------ ---------- ---------- ---------
+        22 Hanesh                       28 08-APR-23 08-JUL-23       6000 pune                                  160
+            60 12-OCT-23
+        24 Jayesh                       28 15-JUN-23 15-DEC-23      12000 nagpur                                168
+            53 12-OCT-23
+        25 Nakul                        27 10-JAN-23 10-APR-23       6000 kolhapur                              170
+            78 12-OCT-23
+
+SQL> select * from gym_members where city = 'pune';
+
+        ID NAME                        AGE JOINING_D EXPIRATIO       COST CITY                               HEIGHT
+        WEIGHT CREATED_A
+---------- -------------------- ---------- --------- --------- ---------- ------------------------------ ---------- ---------- ---------
+        21 Sahil                        22 03-APR-23 03-JUN-23       4000 pune                                  165
+            50 12-OCT-23
+        22 Hanesh                       28 08-APR-23 08-JUL-23       6000 pune                                  160
+            60 12-OCT-23
+
+SQL> select * from gym_members where city = 'pune' and age>21;
+
+        ID NAME                        AGE JOINING_D EXPIRATIO       COST CITY                               HEIGHT
+        WEIGHT CREATED_A
+---------- -------------------- ---------- --------- --------- ---------- ------------------------------ ---------- ---------- ---------
+        21 Sahil                        22 03-APR-23 03-JUN-23       4000 pune                                  165
+            50 12-OCT-23
+        22 Hanesh                       28 08-APR-23 08-JUL-23       6000 pune                                  160
+            60 12-OCT-23
+
+
+SQL> select * from gym_members where MONTHS_BETWEEN (expiration_date,joining_date) <=3;
+
+        ID NAME                        AGE JOINING_D EXPIRATIO       COST CITY                               HEIGHT
+        WEIGHT CREATED_A
+---------- -------------------- ---------- --------- --------- ---------- ------------------------------ ---------- ---------- ---------
+        21 Sahil                        22 03-APR-23 03-JUN-23       4000 pune                                  165
+            50 12-OCT-23
+        22 Hanesh                       28 08-APR-23 08-JUL-23       6000 pune                                  160
+            60 12-OCT-23
+        23 Vishnu                       25 02-AUG-23 02-SEP-23       2000 mumbai                                165
+            63 12-OCT-23
+        25 Nakul                        27 10-JAN-23 10-APR-23       6000 kolhapur                              170
+            78 12-OCT-23
+        26 Ishan                        25 20-FEB-23 20-APR-23       4000 nashik                                175
+            88 12-OCT-23
+
+SQL> SET LINESIZE 180;
+SQL> select * from gym_members ;
+
+        ID NAME                        AGE JOINING_D EXPIRATIO       COST CITY                               HEIGHT
+        WEIGHT CREATED_A
+---------- -------------------- ---------- --------- --------- ---------- ------------------------------ ---------- ---------- ---------
+        21 Sahil                        22 03-APR-23 03-JUN-23       4000 pune                                  165
+            50 12-OCT-23
+        22 Hanesh                       28 08-APR-23 08-JUL-23       6000 pune                                  160
+            60 12-OCT-23
+        23 Vishnu                       25 02-AUG-23 02-SEP-23       2000 mumbai                                165
+            63 12-OCT-23
+        24 Jayesh                       28 15-JUN-23 15-DEC-23      12000 nagpur                                168
+            53 12-OCT-23
+        25 Nakul                        27 10-JAN-23 10-APR-23       6000 kolhapur                              170
+            78 12-OCT-23
+        26 Ishan                        25 20-FEB-23 20-APR-23       4000 nashik                                175
+            88 12-OCT-23
+
+6 rows selected.
+
+SQL> select * from gym_members order by height desc;
+
+        ID NAME                        AGE JOINING_D EXPIRATIO       COST CITY                               HEIGHT     WEIGHT CREATED_A
+---------- -------------------- ---------- --------- --------- ---------- ------------------------------ ---------- ---------- ---------
+        26 Ishan                        25 20-FEB-23 20-APR-23       4000 nashik                                175         88 12-OCT-23
+        25 Nakul                        27 10-JAN-23 10-APR-23       6000 kolhapur                              170         78 12-OCT-23
+        24 Jayesh                       28 15-JUN-23 15-DEC-23      12000 nagpur                                168         53 12-OCT-23
+        21 Sahil                        22 03-APR-23 03-JUN-23       4000 pune                                  165         50 12-OCT-23
+        23 Vishnu                       25 02-AUG-23 02-SEP-23       2000 mumbai                                165         63 12-OCT-23
+        22 Hanesh                       28 08-APR-23 08-JUL-23       6000 pune                                  160         60 12-OCT-23
+
+6 rows selected.
+
+SQL> select name,(weight/((height/100)*(height/100))) as bmi from gym_members;
+
+NAME                        BMI
+-------------------- ----------
+Sahil                18.3654729
+Hanesh                  23.4375
+Vishnu               23.1404959
+Jayesh               18.7783447
+Nakul                26.9896194
+Ishan                28.7346939
+
+6 rows selected.
+
+SQL> select name, EXTRACT(YEAR FROM sysdate)- age as BIRTH_YEAR from gym_members where city ='pune';
+
+NAME                 BIRTH_YEAR
+-------------------- ----------
+Sahil                      2001
+Hanesh                     1995
